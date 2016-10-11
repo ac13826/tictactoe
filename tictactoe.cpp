@@ -3,8 +3,20 @@
 #include<string.h>
 
 using namespace std;
+bool checktie(char (*board)[3]);//to check a tie
+bool checktie(char board[3][3]){
+  bool tie = false;
+  for(int i=0; i<3; i++){
+    for(int k=0; k<3; k++){
+      if(board[i][k] == ' '){
+	tie = true;
+      }
+    }
+  }
+  return !tie;
+}
 
-void printboard(char (*board)[3]);
+void printboard(char (*board)[3]);//printing the board
 void printboard(char (*board)[3]){
   
 
@@ -13,7 +25,7 @@ void printboard(char (*board)[3]){
   cout << "2     " << board[0][1] << "     " << board[1][1] << "     " << board[2][1] << endl;
   cout << "3     " << board[0][2] << "     " << board[1][2] << "     " << board[2][2] << endl;
 }
-void resetboard(char (*board)[3]);
+void resetboard(char (*board)[3]); //reseting the board
 void resetboard(char board[3][3]){
   for(int i=0; i<3; i++){
     for(int k=0; k<3; k++){
@@ -25,6 +37,7 @@ void resetboard(char board[3][3]){
 
 int main(){
   bool gameover = false;
+  bool istie = false;
   char board[3][3];
   int xwins = 0;
   int owins = 0;
@@ -48,11 +61,16 @@ int main(){
   board[3][3] = ' ';*/
  start:
   resetboard(board);
-  while(gameover == false){
+  while(gameover == false){//literally pointless cuz of all the gotos
     printboard(board);
   
-    while(xturn == true){
+    while(xturn == true){//xturn
     xstart:
+      checktie(board);
+      if(checktie(board) == true){
+	cout << "TIE TIE TIE" << endl;
+	goto gameover;
+      }
       cout << "which would X like to go?" << endl;
       cin.get(input, 3);
       cin.ignore();
@@ -62,12 +80,12 @@ int main(){
       if(board[input[0] -'a'][input[1]-'1'] == ' '){
 	board[input[0]-'a'][input[1]-'1'] = 'X';
       }
-      else{
+      else{//if the place entered already exists
 	cout << "you can't go there" << endl;
 	goto xstart;
       }
       printboard(board);
-      if(board[0][0] == 'X' && board[0][1] == 'X' && board[0][2] == 'X'){
+      if(board[0][0] == 'X' && board[0][1] == 'X' && board[0][2] == 'X'){//winning
 	cout << "X wins!!!" << endl;
 	xwins++;
 	goto gameover;
@@ -109,8 +127,13 @@ int main(){
       }
       xturn = false;
     }
-    while(xturn == false){
+    while(xturn == false){//oturn p much the same thing
     ostart:
+      checktie(board);
+      if(checktie(board) == true){
+	cout << "it's a tie!" << endl;
+        goto gameover;
+      }
       cout << "where would O like to go?" << endl;
       cin.get(oinput, 3);
       cin.ignore();
@@ -173,8 +196,8 @@ int main(){
       goto gameover;
     }
   }
-  cout << "Fuck" << endl;
- gameover:
+  cout << "Fuck" << endl;//valuable memories and stuff thus I kept this line 
+ gameover://fin
   cout << "X has won " << xwins << " times" << endl;
   cout << "O has won " << owins << " times" << endl;
   cout << "Do you want to play again" << endl;
