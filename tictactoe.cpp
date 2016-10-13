@@ -1,3 +1,7 @@
+//This is TicTacToe game, by Austin Chang, Period 7, 10/12/16
+//Will play game of tictactoe for two players, count wins and losses, the end
+
+
 
 #include<iostream>
 #include<string.h>
